@@ -15,3 +15,10 @@ load_dotenv()
 API_BASE = os.getenv("API_BASE")
 API_KEY = os.getenv("FBI_API_KEY")
 STATES = [s.strip().upper() for s in os.getenv("STATES", "").split(",") if s.strip()]
+
+OFFENSES = ["V", "P", "HOM", "RPE", "ROB", "ASS", "BUR", "LAR", "MVT", "ARS"]
+
+FROM_DATE = "01-2020"
+TO_DATE = "01-2026"
+
+SLEEP_BETWEEN_CALLS = 0.5
