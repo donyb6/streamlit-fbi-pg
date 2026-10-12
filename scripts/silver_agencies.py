@@ -82,3 +82,6 @@ def run():
         session.close()
         
     print(f"Done. {total_processed} agency rows processed.")
+    
+if __name__ == "__main__":
+    run()
