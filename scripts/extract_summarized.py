@@ -22,3 +22,8 @@ FROM_DATE = "01-2020"
 TO_DATE = "01-2026"
 
 SLEEP_BETWEEN_CALLS = 0.5
+
+def fetch_summarized(state: str, offense: str):
+    url = f"{API_BASE}/summarized/state/{state}/{offense}"
+    params = {"from": FROM_DATE, "to": TO_DATE, "API_KEY": API_KEY}
+    return requests.get(url, params=params, timeout=30)
