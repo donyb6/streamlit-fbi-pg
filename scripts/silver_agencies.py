@@ -48,4 +48,37 @@ UPSERT_SQL = text("""
         is_nibrs = EXCLUDED.is_nibrs,
         nibrs_start_date = EXCLUDED.nibrs_start_date
 """)
-                  
+
+def run():
+    session = get_session()
+    total_processed = 0
+    
+    try:
+        bronze_rows = session.execute(text("""
+                                           SELECT DISTINCT ON (state_abbr) state_abbr, response_json
+                                           FROM bronze_agencies
+                                           ORDER BY state_abbr, extracted_at DESC
+                                           """)).fetchall()
+        for state_abbr, response_json in bronze_rows:
+            raw_json = json.loads(response_json)
+            agency_rows = flatten_agencies(raw_json, state_abbr)
+            
+            if not agency_rows:
+                print(f"{state_abbr}: no agencies found, skipping")
+                continue
+            
+            try:
+                session.execute(UPSERT_SQL, agency_rows)
+                session.commit()
+                
+            except Exception as e:
+                session.rollback()
+                print(f"{state_abbr}: upsert failed: {e}")
+                continue
+            
+            total_processed += len(agency_rows)
+            print(f"{state_abbr}: upserted {len(agency_rows)} agencies")
+    finally:
+        session.close()
+        
+    print(f"Done. {total_processed} agency rows processed.")
