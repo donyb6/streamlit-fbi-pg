@@ -31,3 +31,21 @@ def flatten_agencies(raw_json: dict, state_abbr: str) -> list[dict]:
                 "nibrs_start_date": blank_to_none(agency.get("nibrs_start_date")),
             })
     return rows
+
+UPSERT_SQL = text("""
+    INSERT INTO silver_agencies
+        (ori, agency_name, agency_type_name, county, state_abbr,
+         state_name, latitude, longitude, is_nibrs, nibrs_start_date)
+    VALUES
+        (:ori, :agency_name, :agency_type_name, :county, :state_abbr,
+         :state_name, :latitude, :longitude, :is_nibrs, :nibrs_start_date)
+    ON CONFLICT (ori) DO UPDATE SET
+        agency_name = EXCLUDED.agency_name,
+        agency_type_name = EXCLUDED.agency_type_name,
+        county = EXCLUDED.county,
+        latitude = EXCLUDED.latitude,
+        longitude = EXCLUDED.longitude,
+        is_nibrs = EXCLUDED.is_nibrs,
+        nibrs_start_date = EXCLUDED.nibrs_start_date
+""")
+                  
