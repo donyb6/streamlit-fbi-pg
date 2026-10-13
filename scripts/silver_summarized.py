@@ -22,3 +22,44 @@ STATE_NAMES = {
     "VT": "Vermont", "VA": "Virginia", "WA": "Washington", "WV": "West Virginia",
     "WI": "Wisconsin", "WY": "Wyoming",
 }
+
+def flatten_offenses(raw_json: dict, state_abbr: str) -> list[dict]:
+    state_name = STATE_NAMES.get(state_abbr)
+    if not state_name:
+        print(f"Warning: no full name mapping for {state_abbr}, skipping")
+        return []
+    
+    actuals = raw_json.get("offenses", {}).get("actuals", {})
+    rates = raw_json.get("offenses", {}).get("rates", {})
+    populations = raw_json.get("populations", {})
+
+    state_actuals = actuals.get(f"{state_name} Offenses", {})
+    state_clearance_actuals = actuals.get(f"{state_name} Clearances", {})
+    us_actuals = actuals.get("United States Offenses", {})
+    us_clearance_actuals = actuals.get("United States Clearances", {})
+
+    state_rates = rates.get(f"{state_name} Offenses", {})
+    state_clearance_rates = rates.get(f"{state_name} Clearances", {})
+
+    population = populations.get("population", {}).get(state_name, {})
+    participated_population = populations.get("participated_population", {}).get(state_name, {})
+
+    rows = []
+    for month_key in state_actuals.keys():
+        month_str, year_str = month_key.split("-")
+
+        rows.append({
+            "state_abbr": state_abbr,
+            "offense_code": offense_code,
+            "year": int(year_str),
+            "month": int(month_str),
+            "state_actual_count": state_actuals.get(month_key),
+            "state_clearance_count": state_clearance_actuals.get(month_key),
+            "state_rate_per_100k": state_rates.get(month_key),
+            "state_clearance_rate_per_100k": state_clearance_rates.get(month_key),
+            "us_actual_rate": us_actuals.get(month_key),
+            "us_clearance_rate": us_clearance_actuals.get(month_key),
+            "population": population.get(month_key),
+            "participated_population": participated_population.get(month_key),
+        })
+    return rows
