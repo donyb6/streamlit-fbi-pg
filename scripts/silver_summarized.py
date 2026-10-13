@@ -23,7 +23,7 @@ STATE_NAMES = {
     "WI": "Wisconsin", "WY": "Wyoming",
 }
 
-def flatten_offenses(raw_json: dict, state_abbr: str) -> list[dict]:
+def flatten_offenses(raw_json: dict, state_abbr: str, offense_code: str) -> list[dict]:
     state_name = STATE_NAMES.get(state_abbr)
     if not state_name:
         print(f"Warning: no full name mapping for {state_abbr}, skipping")
@@ -103,7 +103,7 @@ def run():
         
         for state_abbr, offense_code, response_json in bronze_rows:
             raw_json = json.loads(response_json)
-            offense_rows = flatten_offenses(raw_json, state_abbr)
+            offense_rows = flatten_offenses(raw_json, state_abbr, offense_code)
             
             if not offense_rows:
                  print(f"{state_abbr}/{offense_code}: nothing to load, skipping")
