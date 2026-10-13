@@ -19,3 +19,26 @@ OFFENSE_DIMENSION = [
     {"offense_code": "ARS", "offense_name": "Arson",                 "category": "Property"},
 ]
 
+UPSERT_SQL = text("""
+    INSERT INTO gold_dim_offense (offense_code, offense_name, category)
+    VALUES (:offense_code, :offense_name, :category)
+    ON CONFLICT (offense_code) DO UPDATE SET
+        offense_name = EXCLUDED.offense_name,
+        category = EXCLUDED.category
+""")
+
+def run():
+    session = get_session()
+    try:
+        session.execute(UPSERT_SQL, OFFENSE_DIMENSION)
+        session.commit()
+        print(f"Done. {len(OFFENSE_DIMENSION)} offense rows written.")
+    except Exception as e:
+        session.rollback()
+        print(f"Failed to write offense dimension: {e}")
+        
+    finally:
+        session.close()
+        
+if __name__ == "__main__":
+    run()
