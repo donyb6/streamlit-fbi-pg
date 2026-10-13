@@ -20,3 +20,19 @@ UPSERT_SQL = text("""
         state_name = EXCLUDED.state_name,
         region = EXCLUDED.region
 """)
+
+def run():
+    session = get_session()
+    try:
+        session.execute(UPSERT_SQL, STATE_DIMENSION)
+        session.commit()
+        print(f"Done. {len(STATE_DIMENSION)} state rows written.")
+    except Exception as e:
+        session.rollback()
+        print(f"Failed to write state dimension: {e}")
+    finally:
+        session.close()
+        
+if __name__ == "__main__":
+    run()
+        
