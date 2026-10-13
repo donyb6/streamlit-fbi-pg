@@ -107,7 +107,7 @@ def run():
             
             if not offense_rows:
                  print(f"{state_abbr}/{offense_code}: nothing to load, skipping")
-                continue
+                 continue
             
             try:
                 session.execute(UPSERT_SQL, offense_rows)
@@ -116,3 +116,14 @@ def run():
                 session.rollback()
                 print(f"{state_abbr}/{offense_code}: upsert failed: {e}")
                 continue
+            
+            total_processed += len(offense_rows)
+            print(f"{state_abbr}/{offense_code}: {len(offense_rows)} months upserted")
+            
+    finally:
+        session.close()
+        
+        print(f"Done. {total_processed} offense rows processed.")
+
+if __name__ == "__main__":
+    run()
