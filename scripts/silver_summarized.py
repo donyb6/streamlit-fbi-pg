@@ -63,3 +63,28 @@ def flatten_offenses(raw_json: dict, state_abbr: str) -> list[dict]:
             "participated_population": participated_population.get(month_key),
         })
     return rows
+
+UPSERT_SQL = text("""
+    INSERT INTO silver_summarized_offenses
+        (state_abbr, offense_code, year, month,
+         state_actual_count, state_clearance_count,
+         state_rate_per_100k, state_clearance_rate_per_100k,
+         us_actual_rate, us_clearance_rate,
+         population, participated_population)
+    VALUES
+        (:state_abbr, :offense_code, :year, :month,
+         :state_actual_count, :state_clearance_count,
+         :state_rate_per_100k, :state_clearance_rate_per_100k,
+         :us_actual_rate, :us_clearance_rate,
+         :population, :participated_population)
+    ON CONFLICT (state_abbr, offense_code, year, month) DO UPDATE SET
+        state_actual_count = EXCLUDED.state_actual_count,
+        state_clearance_count = EXCLUDED.state_clearance_count,
+        state_rate_per_100k = EXCLUDED.state_rate_per_100k,
+        state_clearance_rate_per_100k = EXCLUDED.state_clearance_rate_per_100k,
+        us_actual_rate = EXCLUDED.us_actual_rate,
+        us_clearance_rate = EXCLUDED.us_clearance_rate,
+        population = EXCLUDED.population,
+        participated_population = EXCLUDED.participated_population
+""")
+                
