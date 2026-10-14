@@ -30,7 +30,7 @@ UPSERT_SQL = text("""
 def run():
     session = get_session()
     try:
-        result =session.execute(UPSERT_SQL)
+        result = session.execute(UPSERT_SQL)
         session.commit()
         print(f"Done. {result.rowcount} fact rows affected.")
     except Exception as e:
