@@ -26,3 +26,18 @@ UPSERT_SQL = text("""
         rate_per_100k = EXCLUDED.rate_per_100k,
         population = EXCLUDED.population
 """)
+
+def run():
+    session = get_session()
+    try:
+        result =session.execute(UPSERT_SQL)
+        session.commit()
+        print(f"Done. {result.rowcount} fact rows affected.")
+    except Exception as e:
+        session.rollback()
+        print(f"Failed to write offense facts: {e}")
+    finally:
+        session.close()
+        
+if __name__ == "__main__":
+    run()
