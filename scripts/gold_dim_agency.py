@@ -5,3 +5,24 @@ from sqlalchemy import text
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config.db import get_session
+
+UPSERT_SQL = text("""
+    INSERT INTO gold_offense_facts
+        (state_abbr, offense_code, year, month,
+         actual_count, clearance_count, clearance_rate,
+         rate_per_100k, population)
+    SELECT
+        state_abbr, offense_code, year, month,
+        state_actual_count,
+        state_clearance_count,
+        ROUND(state_clearance_count::numeric / NULLIF(state_actual_count, 0), 4),
+        state_rate_per_100k,
+        population
+    FROM silver_summarized_offenses
+    ON CONFLICT (state_abbr, offense_code, year, month) DO UPDATE SET
+        actual_count = EXCLUDED.actual_count,
+        clearance_count = EXCLUDED.clearance_count,
+        clearance_rate = EXCLUDED.clearance_rate,
+        rate_per_100k = EXCLUDED.rate_per_100k,
+        population = EXCLUDED.population
+""")
