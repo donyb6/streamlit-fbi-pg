@@ -29,3 +29,25 @@ def test_bronze_summarized_all_calls_succeeded(session):
     assert failed == 0, f"{failed} bronze_summarized_offenses rows failed with non-200 status"
     
     
+# silver layer tests
+def test_silver_agencies_no_duplicate_oris(session):
+    total = session.execute(text("SELECT COUNT(*) FROM silver_agencies")).scalar()
+    distinct = session.execute(text("SELECT COUNT(DISTINCT ori) FROM silver_agencies")).scalar()
+    assert total == distinct, "Duplicate ORI codes found in silver_agencies"
+
+
+def test_silver_offenses_row_count_reasonable(session):
+    total = session.execute(text("SELECT COUNT(*) FROM silver_summarized_offenses")).scalar()
+    # 4 states x 10 offenses x ~73 months = ~2920, allow some tolerance
+    assert 2800 <= total <= 3000, f"Unexpected silver_summarized_offenses row count: {total}"
+
+
+def test_silver_offenses_no_negative_counts(session):
+    bad = session.execute(text("""
+        SELECT COUNT(*) FROM silver_summarized_offenses
+        WHERE state_actual_count < 0 OR state_clearance_count < 0
+    """)).scalar()
+    assert bad == 0, f"{bad} rows have negative offense/clearance counts"
+    
+    
+    
