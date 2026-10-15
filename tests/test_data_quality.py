@@ -49,5 +49,45 @@ def test_silver_offenses_no_negative_counts(session):
     """)).scalar()
     assert bad == 0, f"{bad} rows have negative offense/clearance counts"
     
-    
-    
+
+# gold layer tests
+def test_gold_fact_rows_match_silver(session):
+    silver_count = session.execute(text("SELECT COUNT(*) FROM silver_summarized_offenses")).scalar()
+    gold_count = session.execute(text("SELECT COUNT(*) FROM gold_offense_facts")).scalar()
+    assert silver_count == gold_count, (
+        f"Row count mismatch: silver={silver_count}, gold={gold_count}"
+    )
+
+
+def test_gold_facts_have_no_orphaned_states(session):
+    orphans = session.execute(text("""
+        SELECT COUNT(*) FROM gold_offense_facts f
+        LEFT JOIN gold_dim_state s ON f.state_abbr = s.state_abbr
+        WHERE s.state_abbr IS NULL
+    """)).scalar()
+    assert orphans == 0, f"{orphans} fact rows reference a state not in gold_dim_state"
+
+
+def test_gold_facts_have_no_orphaned_offenses(session):
+    orphans = session.execute(text("""
+        SELECT COUNT(*) FROM gold_offense_facts f
+        LEFT JOIN gold_dim_offense o ON f.offense_code = o.offense_code
+        WHERE o.offense_code IS NULL
+    """)).scalar()
+    assert orphans == 0, f"{orphans} fact rows reference an offense not in gold_dim_offense"
+
+
+def test_gold_clearance_rate_within_valid_range(session):
+    bad = session.execute(text("""
+        SELECT COUNT(*) FROM gold_offense_facts
+        WHERE clearance_rate < 0
+    """)).scalar()
+    assert bad == 0, f"{bad} rows have an out-of-range clearance_rate"
+
+
+def test_gold_dim_agency_matches_silver(session):
+    silver_count = session.execute(text("SELECT COUNT(*) FROM silver_agencies")).scalar()
+    gold_count = session.execute(text("SELECT COUNT(*) FROM gold_dim_agency")).scalar()
+    assert silver_count == gold_count, (
+        f"Row count mismatch: silver_agencies={silver_count}, gold_dim_agency={gold_count}"
+    )
