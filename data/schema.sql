@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS bronze_agencies (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     state_abbr VARCHAR(2) NOT NULL,
     response_json TEXT NOT NULL,
-    extracted_at TIMESTAMPZ NOT NULL
+    extracted_at TIMESTAMPTZ NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS bronze_summarized_offenses (
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS bronze_summarized_offenses (
     to_date VARCHAR(7) NOT NULL,
     response_json TEXT,
     http_status INT NOT NULL,
-    extracted_at TIMESTAMPZ NOT NULL
+    extracted_at TIMESTAMPTZ NOT NULL
 );
 
 -- SILVER LAYER
