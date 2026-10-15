@@ -25,7 +25,7 @@ def run():
 
     pipeline_start = time.time()
 
-    for step_name in PIPELINE_STEPS:
+    for step_name in PIPELINE_ROUTES:
         logger.info(f"Running: {step_name}")
         start = time.time()
 
