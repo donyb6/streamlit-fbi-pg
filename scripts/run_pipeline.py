@@ -18,3 +18,30 @@ PIPELINE_ROUTES = [
     "gold_dim_agency",
     "gold_offense_facts",
 ]
+
+
+def run():
+    logger.info("Pipeline run started")
+
+    pipeline_start = time.time()
+
+    for step_name in PIPELINE_STEPS:
+        logger.info(f"Running: {step_name}")
+        start = time.time()
+
+        try:
+            module = importlib.import_module(step_name)
+            module.run()
+        except Exception:
+            logger.exception(f"Pipeline failed at step: {step_name}")
+            raise
+
+        elapsed = time.time() - start
+        logger.info(f"Completed: {step_name} ({elapsed:.1f}s)")
+
+    total_elapsed = time.time() - pipeline_start
+    logger.info(f"Pipeline complete — all steps ran successfully in {total_elapsed:.1f}s")
+
+
+if __name__ == "__main__":
+    run()
