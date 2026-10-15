@@ -40,7 +40,7 @@ def run():
         logger.info(f"Completed: {step_name} ({elapsed:.1f}s)")
 
     total_elapsed = time.time() - pipeline_start
-    logger.info(f"Pipeline complete — all steps ran successfully in {total_elapsed:.1f}s")
+    logger.info(f"Pipeline complete! All steps ran successfully in {total_elapsed:.1f}s")
 
 
 if __name__ == "__main__":
