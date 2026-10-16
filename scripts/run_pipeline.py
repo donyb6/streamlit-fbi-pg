@@ -17,6 +17,7 @@ PIPELINE_ROUTES = [
     "gold_dim_state",
     "gold_dim_agency",
     "gold_offense_facts",
+    "test_data_quality",
 ]
 
 
