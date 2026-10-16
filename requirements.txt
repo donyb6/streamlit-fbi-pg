@@ -4,3 +4,4 @@ python-dotenv
 requests
 pytest
 logging
+streamlit
