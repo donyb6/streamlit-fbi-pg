@@ -44,4 +44,24 @@ def get_rates(states, years, months, offenses, group_by):
     select_cols = ", ".join(f"{expr} AS {alias}" for expr, alias in cols)
     group_exprs = ", ".join(expr for expr, _ in cols)
 
-    
+    sql = f"""
+        SELECT {select_cols},
+        SUM(f.actual_count) AS total_offenses,
+               ROUND(SUM(f.actual_count)::numeric
+                     / NULLIF(SUM(f.population), 0) * 100000 * 12, 2) AS annual_rate_per_100k,
+               ROUND(SUM(f.clearance_count)::numeric
+                     / NULLIF(SUM(f.actual_count), 0), 3) AS clearance_rate
+        FROM gold_offense_facts f
+        JOIN gold_dim_state s ON f.state_abbr = s.state_abbr
+        JOIN gold_dim_offense o ON f.offense_code = o.offense_code
+        WHERE f.state_abbr   = ANY(:states)
+          AND f.year         = ANY(:years)
+          AND f.month        = ANY(:months)
+          AND f.offense_code = ANY(:offenses)
+        GROUP BY {group_exprs}
+        ORDER BY {group_exprs}
+    """
+    params = {"states": list(states), "years": list(years),
+              "months": list(months), "offenses": list(offenses)}
+    with engine.connect() as conn:
+        return pd.read_sql(text(sql), conn, params=params)
