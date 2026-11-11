@@ -45,3 +45,14 @@ YEAR_OPTIONS = ["All"] + [str(y) for y in all_years]
 if "year_pick" not in st.session_state:
     st.session_state["year_pick"] = ["All"]
     st.session_state["_year_prev"] = ["All"]
+
+def tidy_year_pills():
+    """Make 'All' and individual years mutually exclusive"""
+    sel = st.session_state["year_pick"]
+    prev = st.session_state["_year_prev"]
+    if "All" in sel and len(sel) > 1:
+        sel = ["All"] if "All" not in prev else [s for s in sel if s != "All"]
+    elif not sel:
+        sel = ["All"]
+    st.session_state["year_pick"] = sel
+    st.session_state["_year_prev"] = sel
