@@ -25,3 +25,9 @@ def load_series(states: tuple, years: tuple, offense_codes: tuple, by: str) -> p
     df["date"] = pd.to_datetime(dict(year=df["year"], month=df["month"], day=1))
     df["rate"] = df["annual_rate_per_100k"].astype(float)
     return df[["series", "date", "rate"]].sort_values(["series", "date"]).reset_index(drop=True)
+
+
+# load options and create lookup dictionaries for state and offense names/codes
+states_df, offenses_df, all_year = load_options()
+abbr_to_name = dict(zip(states_df["state_abbr"], states_df["state_name"]))
+offense_to_code = dict(zip(offenses_df["offense_name"], offenses_df["offense_code"]))
