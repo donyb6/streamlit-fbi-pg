@@ -61,3 +61,5 @@ def tidy_year_pills():
 # page header
 st.title(":material/query_stats: Crime Data Explorer")
 st.caption("Compare states or offenses on annualised rates per 100,000 people.")
+
+left, right = st.columns([1, 3])
