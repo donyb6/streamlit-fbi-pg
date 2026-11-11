@@ -28,7 +28,7 @@ def load_series(states: tuple, years: tuple, offense_codes: tuple, by: str) -> p
 
 
 # load options and create lookup dictionaries for state and offense names/codes
-states_df, offenses_df, all_year = load_options()
+states_df, offenses_df, all_years = load_options()
 abbr_to_name = dict(zip(states_df["state_abbr"], states_df["state_name"]))
 offense_to_code = dict(zip(offenses_df["offense_name"], offenses_df["offense_code"]))
 
@@ -37,3 +37,11 @@ offense_to_code = dict(zip(offenses_df["offense_name"], offenses_df["offense_cod
 if "states" not in st.session_state:
     from_url =[s for s in st.query_params.get("states", "").split(",") if s in abbr_to_name]
     st.session_state["states"] = from_url or list(abbr_to_name)
+    
+
+YEAR_OPTIONS = ["All"] + [str(y) for y in all_years]
+
+# session state for year selection
+if "year_pick" not in st.session_state:
+    st.session_state["year_pick"] = ["All"]
+    st.session_state["_year_prev"] = ["All"]
