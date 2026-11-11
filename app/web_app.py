@@ -56,3 +56,8 @@ def tidy_year_pills():
         sel = ["All"]
     st.session_state["year_pick"] = sel
     st.session_state["_year_prev"] = sel
+    
+    
+# page header
+st.title(":material/query_stats: Crime Data Explorer")
+st.caption("Compare states or offenses on annualised rates per 100,000 people.")
