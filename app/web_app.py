@@ -62,4 +62,20 @@ def tidy_year_pills():
 st.title(":material/query_stats: Crime Data Explorer")
 st.caption("Compare states or offenses on annualised rates per 100,000 people.")
 
+
 left, right = st.columns([1, 3])
+
+#left column: filters
+with left:
+    with st.container (border = True):
+        picked = st.multiselect("States", options=list(abbr_to_name), key="states", format_func=abbr_to_name.get)
+        
+        mode = st.radio("Compare by", ["States", "Offenses"], horizontal=True)
+        log_scale = False
+        if mode == "States":
+            offense_names = [st.selectbox("Offense", list(offense_to_code), index=list(offense_to_code).index("Violent Crime (All)"))]
+        else:
+            offense_names = st.multiselect(
+                "Offense", list(offense_to_code), default=["Violent Crime (All)", "Property Crime (All)"])
+            st.caption("Selected states are pooled into one combined rate.")
+            log_scale = st.checkbox("Log scale (helps when rates differ a lot)")
