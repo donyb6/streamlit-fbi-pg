@@ -79,3 +79,16 @@ with left:
                 "Offense", list(offense_to_code), default=["Violent Crime (All)", "Property Crime (All)"])
             st.caption("Selected states are pooled into one combined rate.")
             log_scale = st.checkbox("Log scale (helps when rates differ a lot)")
+            
+        year_pick = st.pills("Years", options=YEAR_OPTIONS, selection_mode = "multi",
+                             key = "year_pick", on_change = tidy_year_pills) or ["All"]
+        include_2021 = False
+        if "All" in year_pick:
+            include_2021 = st.checkbox("Include 2021 (reported anomaly year)", value=False)
+            
+        smooth = st.toggle("Smooth (12-month average)", value=True)
+        
+        with st.expander("More filters"):
+            months = st.multiselect("Months", list(range(1, 13)), default=list(range(1, 13)),
+                                    format_func=lambda m: calendar.month_abbr[m])
+
