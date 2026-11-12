@@ -95,3 +95,9 @@ with left:
 if not picked or not months or not offense_names:
     st.warning("Please select at least one state, month, and offense.")
     st.stop()
+
+# Determine which years to include in the query
+if "All" in year_pick:
+    years_sel = [y for y in all_years if include_2021 or y != 2021]
+else:
+    years_sel = [int(y) for y in year_pick]
