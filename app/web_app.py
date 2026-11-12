@@ -92,3 +92,6 @@ with left:
             months = st.multiselect("Months", list(range(1, 13)), default=list(range(1, 13)),
                                     format_func=lambda m: calendar.month_abbr[m])
 
+if not picked or not months or not offense_names:
+    st.warning("Please select at least one state, month, and offense.")
+    st.stop()
