@@ -124,3 +124,23 @@ with left:
         c1, c2 = st.columns(2)
         c1.metric("Highest rate", avg.index[-1], f"{avg.iloc[-1]:,.0f} per 100k", delta_color="off")
         c2.metric("Lowest rate", avg.index[0], f"{avg.iloc[0]:,.0f} per 100k", delta_color="off")
+        
+        
+# right column: chart
+with right:
+    with st.container(border=True):
+        chart = (
+            alt.Chart(df).mark_line().encode(
+                 x=alt.X("date:T", title="Date"),
+                y=alt.Y("rate:Q", title="Annualised rate per 100k",
+                        scale=alt.Scale(type="log") if log_scale else alt.Scale(zero=False)),
+                color=alt.Color("series:N", title="State" if mode == "States" else "Offense"),
+            )
+            .properties(
+                width = "container",
+                height = 380)
+        )
+        st.altair_chart(chart)
+
+if 2021 in years_sel:
+    st.caption("2021 is included. The tier-comparison and offense-rate views leave it out.")
