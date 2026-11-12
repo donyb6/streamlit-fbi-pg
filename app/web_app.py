@@ -101,3 +101,18 @@ if "All" in year_pick:
     years_sel = [y for y in all_years if include_2021 or y != 2021]
 else:
     years_sel = [int(y) for y in year_pick]
+    
+    
+# data
+df = load_series(tuple(picked), tuple(all_years), tuple(offense_to_code[o] for o in offense_names),
+                 "state" if mode == "States" else "offense")
+
+if smooth:
+    df["rate"] = df.groupby("series")["rate"].transform(lambda s: s.rolling(12, min_periods=1).mean())
+
+df = df[df["date"].dt.year.isin(years_sel)]
+df = df[df["date"].dt.month.isin(months)]
+
+if df.empty:
+    st.warning("No data for this combination of filters.")
+    st.stop()
