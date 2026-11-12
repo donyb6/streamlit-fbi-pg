@@ -116,3 +116,11 @@ df = df[df["date"].dt.month.isin(months)]
 if df.empty:
     st.warning("No data for this combination of filters.")
     st.stop()
+    
+# summary metrics
+avg = df.groupby("series")["rate"].mean().sort_values()
+with left:
+    with st.container(border=True):
+        c1, c2 = st.columns(2)
+        c1.metric("Highest rate", avg.index[-1], f"{avg.iloc[-1]:,.0f} per 100k", delta_color="off")
+        c2.metric("Lowest rate", avg.index[0], f"{avg.iloc[0]:,.0f} per 100k", delta_color="off")
