@@ -179,6 +179,18 @@ with right:
                          alt.Tooltip("total_offenses:Q", title="Offenses", format=",")],
             ).properties(width="container", height=bar_height))
     
+    with b2.container(border=True, height=272):
+        st.markdown("**Clearance rate, whole selection**")
+        st.altair_chart(
+             alt.Chart(summary.dropna(subset=["clearance"])).mark_bar().encode(
+                y=alt.Y("series:N", sort=bar_order, title=None),
+                x=alt.X("clearance:Q", title="Share of offenses cleared",
+                        axis=alt.Axis(format=".0%")),
+                color=alt.Color("series:N", scale=color_scale, legend=None),
+                tooltip=[alt.Tooltip("series:N", title="Series"),
+                         alt.Tooltip("clearance:Q", title="Clearance rate", format=".1%")],
+            ).properties(width="container", height=bar_height))
+    
         
 
 if 2021 in years_sel:
