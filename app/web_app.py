@@ -144,3 +144,12 @@ with right:
 
 if 2021 in years_sel:
     st.caption("2021 is included. The tier-comparison and offense-rate views leave it out.")
+    
+    
+# state vs peer average
+if mode == "Offenses":
+    st.stop()
+    
+st.subheader("Individual states vs peer average")
+st.caption('For each state, the "peer average" is the simple average of the other '
+           'selected states, excluding that state itself.')    
