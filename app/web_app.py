@@ -138,12 +138,13 @@ order = sorted(set(df["series"]) | set(summary["series"]))
 color_scale = alt.Scale(domain=order)
 
 # summary metrics
-avg = df.groupby("series")["rate"].mean().sort_values()
+ranked = summary.sort_values("rate")
 with left:
     with st.container(border=True):
         c1, c2 = st.columns(2)
-        c1.metric("Highest rate", avg.index[-1], f"{avg.iloc[-1]:,.0f} per 100k", delta_color="off")
-        c2.metric("Lowest rate", avg.index[0], f"{avg.iloc[0]:,.0f} per 100k", delta_color="off")
+        hi, lo = ranked.iloc[-1], ranked.iloc[0]
+        c1.metric("Highest rate", hi["series"], f"{hi['rate']:,.0f} per 100k", delta_color="off")
+        c2.metric("Lowest rate", lo["series"], f"{lo['rate']:,.0f} per 100k", delta_color="off")
         
         
 # right column: chart
