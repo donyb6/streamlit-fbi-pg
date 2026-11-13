@@ -114,7 +114,9 @@ if "All" in year_pick:
 else:
     years_sel = [int(y) for y in year_pick]
     
-    
+by = "state" if mode == "States" else "offense"
+codes = tuple(offense_to_code[o] for o in offense_names)
+  
 # data
 df = load_series(tuple(picked), tuple(all_years), tuple(offense_to_code[o] for o in offense_names),
                  "state" if mode == "States" else "offense")
