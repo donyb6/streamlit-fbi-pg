@@ -162,6 +162,12 @@ with right:
                 height = 380)
         )
         st.altair_chart(chart)
+        
+    bar_order = summary.sort_values("rate", ascending=False)["series"].tolist()
+    bar_height = max(120, 34 * len(summary))
+    b1, b2 = st.columns(2)
+    
+        
 
 if 2021 in years_sel:
     st.caption("2021 is included. The tier-comparison and offense-rate views leave it out.")
