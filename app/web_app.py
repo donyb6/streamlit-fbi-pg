@@ -170,3 +170,16 @@ for i in range(0, len(names), 2):
             "date", var_name="series", value_name="rate"
         )
         delta = pd.DataFrame({"date": wide.index, "delta": (wide[name] - peers).values})
+        
+        with cols[2 * j].container(border=True):
+            st.markdown(f"**{name} vs peer average**")
+            st.altair_chart(
+                alt.Chart(compare).mark_line().encode(
+                    x=alt.X("date:T", title="Date"),
+                    y=alt.Y("rate:Q", title="Rate per 100k", scale=alt.Scale(zero=False)),
+                    color=alt.Color("Series:N",
+                                    scale=alt.Scale(domain=[name, "Peer average"], range=["red", "gray"])),
+                ).properties(width="container", height=250)
+            )
+            
+        
