@@ -26,6 +26,18 @@ def load_series(states: tuple, years: tuple, offense_codes: tuple, by: str) -> p
     df["rate"] = df["annual_rate_per_100k"].astype(float)
     return df[["series", "date", "rate"]].sort_values(["series", "date"]).reset_index(drop=True)
 
+@st.cache_data(ttl=3600)
+def load_summary(states: tuple, years: tuple, months: tuple,
+                 offense_codes: tuple, by: str) -> pd.DataFrame:
+    """Pooled figures over the whole selection: one row per state or offense.
+    Same formulas as the views (total offenses / total population, total clearances /
+    total offenses), so the numbers are exact rather than averages of monthly values."""
+    df = get_rates(list(states), list(years), list(months), list(offense_codes), [by])
+    df = df.rename(columns={by: "series"})
+    df["rate"] = df["annual_rate_per_100k"].astype(float)
+    df["clearance"] = df["clearance_rate"].astype(float)
+    return df[["series", "rate", "clearance", "total_offenses"]]
+
 
 # load options and create lookup dictionaries for state and offense names/codes
 states_df, offenses_df, all_years = load_options()
