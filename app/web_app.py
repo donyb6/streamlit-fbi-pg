@@ -160,3 +160,13 @@ if len(picked) < 2:
 
 wide = df.pivot(index="date", columns="series", values="rate")
 names = list(wide.columns)
+
+for i in range(0, len(names), 2):
+    cols = st.columns(4)
+    for j, name in enumerate(names[i:i + 2]):
+        peers = wide.drop(columns=name).mean(axis=1)
+        
+        compare = pd.DataFrame({"date": wide.index, name: wide[name].values, "Peer average": peers.values}).melt(
+            "date", var_name="series", value_name="rate"
+        )
+        delta = pd.DataFrame({"date": wide.index, "delta": (wide[name] - peers).values})
