@@ -167,6 +167,18 @@ with right:
     bar_height = max(120, 34 * len(summary))
     b1, b2 = st.columns(2)
     
+    with b1.container(border=True, height=271):
+        st.markdown("**Rate per 100k, whole selection**")
+        st.altair_chart(
+            alt.Chart(summary).mark_bar().encode(
+                y=alt.Y("series:N", sort=bar_order, title=None),
+                x=alt.X("rate:Q", title="Annualised rate per 100k"),
+                color=alt.Color("series:N", scale=color_scale, legend=None),
+                tooltip=[alt.Tooltip("series:N", title="Series"),
+                         alt.Tooltip("rate:Q", title="Rate per 100k", format=",.1f"),
+                         alt.Tooltip("total_offenses:Q", title="Offenses", format=",")],
+            ).properties(width="container", height=bar_height))
+    
         
 
 if 2021 in years_sel:
