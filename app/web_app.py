@@ -158,3 +158,5 @@ if len(picked) < 2:
     st.info("Select at least two states to see the peer comparison.")
     st.stop()
 
+wide = df.pivot(index="date", columns="series", values="rate")
+names = list(wide.columns)
