@@ -164,10 +164,10 @@ with right:
         st.altair_chart(chart)
         
     bar_order = summary.sort_values("rate", ascending=False)["series"].tolist()
-    bar_height = max(120, 34 * len(summary))
+    bar_height = max(200, 34 * len(summary))
     b1, b2 = st.columns(2)
     
-    with b1.container(border=True, height=271):
+    with b1.container(border=True, height=272):
         st.markdown("**Rate per 100k, whole selection**")
         st.altair_chart(
             alt.Chart(summary).mark_bar().encode(
