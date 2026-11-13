@@ -153,3 +153,8 @@ if mode == "Offenses":
 st.subheader("Individual states vs peer average")
 st.caption('For each state, the "peer average" is the simple average of the other '
            'selected states, excluding that state itself.')    
+
+if len(picked) < 2:
+    st.info("Select at least two states to see the peer comparison.")
+    st.stop()
+
