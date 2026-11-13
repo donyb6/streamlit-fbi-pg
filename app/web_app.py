@@ -130,7 +130,13 @@ df = df[df["date"].dt.month.isin(months)]
 if df.empty:
     st.warning("No data for this combination of filters.")
     st.stop()
-    
+
+summary = load_summary(tuple(picked), tuple(years_sel), tuple(months), codes, by)
+summary = summary.dropna(subset=["rate"])
+
+order = sorted(set(df["series"]) | set(summary["series"]))
+color_scale = alt.Scale(domain=order)
+
 # summary metrics
 avg = df.groupby("series")["rate"].mean().sort_values()
 with left:
