@@ -222,7 +222,8 @@ for i in range(0, len(names), 2):
                                 "peer" : peers.values})
         compare["delta"] = compare["own"] - compare["peer"]
         
-        
+        base = alt.Chart(compare).encode(x = alt.X("date:T", title = "Date"))
+        shared_y = alt.Scale(zero=False)
         
         with cols[2 * j].container(border=True):
             st.markdown(f"**{name} vs peer average**")
