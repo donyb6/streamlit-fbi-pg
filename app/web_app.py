@@ -1,6 +1,7 @@
 import calendar
 import sys
 import os
+import base64
 
 import streamlit as st
 import pandas as pd
@@ -8,6 +9,7 @@ import altair as alt
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from app.queries import get_options, get_rates
+from pathlib import Path
 
 st.set_page_config(page_title="FBI Crime Data", layout="wide")
 
@@ -73,7 +75,6 @@ def tidy_year_pills():
 # page header
 st.title(":material/query_stats: Crime Data Explorer")
 st.caption("Compare states or offenses on annualised rates per 100,000 people.")
-
 
 left, right = st.columns([1, 3])
 
