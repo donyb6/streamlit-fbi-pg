@@ -238,8 +238,6 @@ for i in range(0, len(names), 2):
         with cols[2 * j + 1].container(border=True):
             st.markdown(f"**{name} minus peer average**")
             st.altair_chart(
-                alt.Chart(delta).mark_area(color="#7fc4ff").encode(
-                    x=alt.X("date:T", title="Date"),
+                base.mark_area(color="#7fc4ff").encode(
                     y=alt.Y("delta:Q", title="Delta"),
-                ).properties(width="container", height=250)
-            )
+                ).properties(width="container", height=250))
