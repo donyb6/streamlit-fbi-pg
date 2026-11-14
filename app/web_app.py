@@ -121,15 +121,29 @@ codes = tuple(offense_to_code[o] for o in offense_names)
 df = load_series(tuple(picked), tuple(all_years), tuple(offense_to_code[o] for o in offense_names),
                  "state" if mode == "States" else "offense")
 
-if smooth:
-    df["rate"] = df.groupby("series")["rate"].transform(lambda s: s.rolling(12, min_periods=1).mean())
-
 df = df[df["date"].dt.year.isin(years_sel)]
-df = df[df["date"].dt.month.isin(months)]
+df =  df[df["date"].dt.month.isin(months)]
 
 if df.empty:
-    st.warning("No data for this combination of filters.")
-    st.stop()
+    st.warning("No data for this combination of filters")
+    st. stop()
+    
+# A "segment" is an unbroken run of months. A gap (an excluded year, unticked months)
+# starts a new segment, so lines are not drawn across it and smoothing never averages
+# across it (otherwise an excluded year leaks into the months after it)
+month_no = df["date"].dt.year * 12 + df["date"].dt.month
+seg_of, seg, prev = {}, 0, None
+for m in sorted(month_no.unique()):
+    if prev is not None and m - prev != 1:
+        seg += 1
+    seg_of[m] = seg
+    prev = m
+df = df.assign(segment=month_no.map(seg_of))
+
+if smooth:
+    df["rate"] = df.groupby(["series", "segment"])["rate"].transform(
+        lambda s: s.rolling(12, min_periods=1).mean()
+    )
 
 summary = load_summary(tuple(picked), tuple(years_sel), tuple(months), codes, by)
 summary = summary.dropna(subset=["rate"])
