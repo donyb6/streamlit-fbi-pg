@@ -98,7 +98,10 @@ with left:
         if "All" in year_pick:
             include_2021 = st.checkbox("Include 2021 (reported anomaly year)", value=False)
             
-        smooth = st.toggle("Smooth (12-month average)", value=True)
+        smooth = st.toggle(
+    "Smooth (12-month average)", value=True,
+    help="Averages each month with the 11 before it, but never across a gap, "
+         "so an excluded year cannot leak into the months after it.")
         
         with st.expander("More filters"):
             months = st.multiselect("Months", list(range(1, 13)), default=list(range(1, 13)),
