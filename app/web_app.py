@@ -225,6 +225,8 @@ if len(picked) < 2:
     st.stop()
 
 wide = df.pivot(index="date", columns="series", values="rate")
+wide = wide.reindex(pd.date_range(wide.index.min(), wide.index.max(), freq="MS"))
+wide.index.name = "date"  # missing months are now NaN rows, which break the lines
 names = list(wide.columns)
 
 for i in range(0, len(names), 2):
