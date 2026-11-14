@@ -71,7 +71,54 @@ def tidy_year_pills():
     st.session_state["year_pick"] = sel
     st.session_state["_year_prev"] = sel
     
-    
+# About me
+AVATAR_URL = "data:image/jpeg;base64," + base64.b64encode(
+    (Path(__file__).parent.parent / "image" / "avatar.jpg").read_bytes()).decode()
+
+st.markdown("""
+<style>
+.st-key-about_me {
+    position: fixed;
+    bottom: 1.25rem;
+    right: 1.25rem;
+    z-index: 1000;
+    width: auto;
+}
+.st-key-about_me button {
+    width: 3.6rem;
+    height: 3.6rem;
+    padding: 0;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    background-image: url("__AVATAR__");
+    background-size: cover;
+    background-position: center;
+    color: transparent;
+}
+.st-key-about_me button [data-testid="stIconMaterial"] {
+    display: none;
+}
+</style>
+""".replace("__AVATAR__", AVATAR_URL), unsafe_allow_html=True)
+
+with st.container(key="about_me"):
+    with st.popover("About me"):
+        st.markdown("### Desmond Boako Obeng")
+        st.caption("BSc Data Science (Level 400), Ghana Communication Technology University. ")
+        st.write(
+            "I like data and data engineering. "
+            "Outside the data work, I have a knack for networking and computer hardware. "
+            "This app is the end of a pipeline I built step by step: FBI Crime Data Explorer API, "
+            "then bronze, silver and gold layers in PostgreSQL, then this Streamlit app on Neon."
+        )
+        st.markdown(
+            "[GitHub](https://github.com/donyb6) · "
+            "[obengdboako@gmail.com](mailto:obengdboako@gmail.com)"
+        )
+        st.caption("Data: FBI Crime Data Explorer")
+        
+
 # page header
 st.title(":material/query_stats: Crime Data Explorer")
 st.caption("Compare states or offenses on annualised rates per 100,000 people.")
