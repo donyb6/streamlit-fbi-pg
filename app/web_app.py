@@ -120,7 +120,7 @@ with st.container(key="about_me"):
         
 
 # page header
-st.title(":material/query_stats: Crime Data Explorer")
+st.title(":material/query_stats: FBI Crime Data Explorer")
 st.caption("Compare states or offenses on annualised rates per 100,000 people.")
 
 left, right = st.columns([1, 3])
