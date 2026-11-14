@@ -114,7 +114,8 @@ with st.container(key="about_me"):
         )
         st.markdown(
             "[GitHub](https://github.com/donyb6) · "
-            "[obengdboako@gmail.com](mailto:obengdboako@gmail.com)"
+            "[obengdboako@gmail.com](mailto:obengdboako@gmail.com) · "
+            "[Snapchat](https://www.snapchat.com/@d.onyb)"
         )
         st.caption("Data: FBI Crime Data Explorer")
         
