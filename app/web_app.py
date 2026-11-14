@@ -170,6 +170,7 @@ with right:
                 y=alt.Y("rate:Q", title="Annualised rate per 100k",
                         scale=alt.Scale(type="log") if log_scale else alt.Scale(zero=False)),
                 color=alt.Color("series:N", title="State" if mode == "States" else "Offense"),
+                detail=alt.Detail("segment:N"),
             )
             .properties(
                 width = "container",
