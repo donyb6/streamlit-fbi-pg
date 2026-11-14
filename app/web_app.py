@@ -226,14 +226,13 @@ for i in range(0, len(names), 2):
         shared_y = alt.Scale(zero=False)
         
         with cols[2 * j].container(border=True):
-            st.markdown(f"**{name} vs peer average**")
+            st.markdown(f"**{name} vs peer average**  \n:red[● {name}] · :gray[● Peer average]")
             st.altair_chart(
-                alt.Chart(compare).mark_line().encode(
-                    x=alt.X("date:T", title="Date"),
-                    y=alt.Y("rate:Q", title="Rate per 100k", scale=alt.Scale(zero=False)),
-                    color=alt.Color("Series:N",
-                                    scale=alt.Scale(domain=[name, "Peer average"], range=["red", "gray"])),
-                ).properties(width="container", height=250)
+                (base.mark_line(color="red").encode(
+                    y=alt.Y("own:Q", title="Rate per 100k", scale=shared_y))
+                 + base.mark_line(color="gray").encode(
+                     y=alt.Y("peer:Q", title="Rate per 100k", scale=shared_y))
+                 ).properties(width="container", height=250)
             )
             
         with cols[2 * j + 1].container(border=True):
