@@ -73,7 +73,7 @@ def tidy_year_pills():
     
 # About me
 AVATAR_URL = "data:image/jpeg;base64," + base64.b64encode(
-    (Path(__file__).parent.parent / "image" / "avatar.jpg").read_bytes()).decode()
+    (Path(__file__).parent.parent / "app" / "avatar.jpg").read_bytes()).decode()
 
 st.markdown("""
 <style>
