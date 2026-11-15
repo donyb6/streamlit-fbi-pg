@@ -104,8 +104,8 @@ st.markdown("""
 
 with st.container(key="about_me"):
     with st.popover("About me"):
-        st.markdown("### Desmond Boako Obeng")
-        st.caption("BSc Data Science (Level 400), Ghana Communication Technology University. ")
+        st.markdown("### Hello, I'm Desmond Boako Obeng!")
+        st.caption("A level 400 Bsc Data Science student at Ghana Communication Technology University. ")
         st.write(
             "I like data and data engineering. "
             "Outside the data work, I have a knack for networking and computer hardware. "
@@ -117,7 +117,7 @@ with st.container(key="about_me"):
             "[obengdboako@gmail.com](mailto:obengdboako@gmail.com) · "
             "[Snapchat](https://www.snapchat.com/@d.onyb)"
         )
-        st.caption("Data: FBI Crime Data Explorer")
+        st.caption("FBI Crime Data Explorer")
         
 
 # page header
