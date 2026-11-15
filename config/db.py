@@ -10,6 +10,10 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 
 if DATABASE_URL:
     CONNECTION_URL = DATABASE_URL
+    for prefix in ("postgresql://", "postgres://"):
+        if CONNECTION_URL.startswith(prefix):
+            CONNECTION_URL = "postgresql+psycopg2://" + CONNECTION_URL[len(prefix):]
+            break
 else:
 
     CONNECTION_URL = URL.create(
