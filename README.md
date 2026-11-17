@@ -5,3 +5,10 @@ An end-to-end data engineering project: a bronze/silver/gold pipeline that pulls
 **Live app:** [https://fbi-crime-dexp.streamlit.app/]
 
 ![App screenshot](image/screenshot.png)
+
+
+## What it does
+
+- Extracts agency lists and monthly offense counts for **California, Texas, Wyoming and Vermont**, from **January 2020 to January 2026**.
+- Cleans and models the data in layers, ending in a star schema.
+- Serves an interactive dashboard: compare states or offenses, pick individual years or months, see annualised rates per 100,000 people, clearance rates, and each state against the average of its peers.
