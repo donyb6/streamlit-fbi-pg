@@ -30,3 +30,7 @@ flowchart LR
 | Bronze | The API responses exactly as received. Every run appends new rows and nothing is overwritten. |
 | Silver | Flattened tables built from the latest successful snapshot per state and offense, loaded with idempotent upserts. |
 | Gold | Star schema: `gold_offense_facts` plus the `gold_dim_state`, `gold_dim_offense` and `gold_dim_agency` dimensions. |
+
+## Data quality
+
+`tests/test_dq.py` runs 11 pytest checks across the layers: all four states landed, every API call succeeded, no duplicate agency codes, row counts match between silver and gold, no orphaned foreign keys, and no negative counts or clearance rates.
