@@ -12,3 +12,14 @@ An end-to-end data engineering project: a bronze/silver/gold pipeline that pulls
 - Extracts agency lists and monthly offense counts for **California, Texas, Wyoming and Vermont**, from **January 2020 to January 2026**.
 - Cleans and models the data in layers, ending in a star schema.
 - Serves an interactive dashboard: compare states or offenses, pick individual years or months, see annualised rates per 100,000 people, clearance rates, and each state against the average of its peers.
+
+## Architecture
+
+```mermaid
+flowchart LR
+    A[FBI Crime Data Explorer API] --> B[Bronze: raw JSON, append-only]
+    B --> C[Silver: flattened, latest snapshot per key]
+    C --> D[Gold: star schema]
+    D --> E[(Neon PostgreSQL)]
+    E --> F[Streamlit app]
+```
