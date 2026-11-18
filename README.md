@@ -34,3 +34,7 @@ flowchart LR
 ## Data quality
 
 `tests/test_dq.py` runs 11 pytest checks across the layers: all four states landed, every API call succeeded, no duplicate agency codes, row counts match between silver and gold, no orphaned foreign keys, and no negative counts or clearance rates.
+
+## Tech stack
+
+Python, SQLAlchemy, PostgreSQL, pandas, Altair, Streamlit. Hosted on Neon (database) and Streamlit Community Cloud (app).
