@@ -23,3 +23,10 @@ flowchart LR
     D --> E[(Neon PostgreSQL)]
     E --> F[Streamlit app]
 ```
+
+
+| Layer | What it holds |
+|---|---|
+| Bronze | The API responses exactly as received. Every run appends new rows and nothing is overwritten. |
+| Silver | Flattened tables built from the latest successful snapshot per state and offense, loaded with idempotent upserts. |
+| Gold | Star schema: `gold_offense_facts` plus the `gold_dim_state`, `gold_dim_offense` and `gold_dim_agency` dimensions. |
