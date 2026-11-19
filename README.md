@@ -98,3 +98,13 @@ The gold tables and views are copied to a Neon project with `pg_dump` and `psql`
 - 2021 is excluded by default because it is a reported anomaly year in the source data. A checkbox adds it back.
 - Rates are annualised: total offenses divided by total population, times 100,000, times 12 (so they are valid for any selection of months).
 - Data source: [FBI Crime Data Explorer](https://cde.ucr.cjis.gov/). This project is not affiliated with the FBI.
+
+## Project structure
+
+```
+app/          Streamlit app and query layer
+config/       Database connection
+scripts/      Pipeline scripts and views.sql
+tests/        Data quality tests
+schema.sql    Database schema reference
+```
