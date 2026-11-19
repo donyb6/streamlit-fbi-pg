@@ -52,3 +52,39 @@ The pipeline was originally built on MySQL and then migrated. The main differenc
 | Division by zero returns `NULL` | Division by zero raises an error, so `NULLIF` is needed |
 | A failed statement leaves the session usable | A failed statement aborts the transaction until `rollback()` |
 | Index names are unique per table | Constraint names must be unique across the schema |
+
+## Run it locally
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate    
+pip install -r requirements.txt
+```
+
+Create a `.env` file:
+
+```
+FBI_API_KEY=your_key
+FBI_API_BASE=https://api.usa.gov/crime/fbi/cde
+STATES=CA,TX,WY,VT
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=your_password
+POSTGRES_DATABASE=fbi_crime
+```
+
+Create the tables, run the pipeline, and test it:
+
+```bash
+psql -U postgres -d fbi_crime -f schema.sql
+python scripts/run_pipeline.py
+pytest tests/ -v
+psql -U postgres -d fbi_crime -f scripts/views.sql
+```
+
+Start the dashboard:
+
+```bash
+streamlit run app/web_app.py
+```
