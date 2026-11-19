@@ -106,5 +106,5 @@ app/          Streamlit app and query layer
 config/       Database connection
 scripts/      Pipeline scripts and views.sql
 tests/        Data quality tests
-schema.sql    Database schema reference
+data/         schema.sql, views.sql, reset_schema.sql
 ```
