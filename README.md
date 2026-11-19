@@ -38,3 +38,17 @@ flowchart LR
 ## Tech stack
 
 Python, SQLAlchemy, PostgreSQL, pandas, Altair, Streamlit. Hosted on Neon (database) and Streamlit Community Cloud (app).
+
+## From MySQL to PostgreSQL
+
+The pipeline was originally built on MySQL and then migrated. The main differences I handled:
+
+| MySQL | PostgreSQL |
+|---|---|
+| `ON DUPLICATE KEY UPDATE` | `ON CONFLICT (...) DO UPDATE` with `EXCLUDED` |
+| `AUTO_INCREMENT` | `GENERATED ALWAYS AS IDENTITY` |
+| `LONGTEXT` | `TEXT` |
+| Division always returns a decimal | Integer division truncates, so `::numeric` casts are needed |
+| Division by zero returns `NULL` | Division by zero raises an error, so `NULLIF` is needed |
+| A failed statement leaves the session usable | A failed statement aborts the transaction until `rollback()` |
+| Index names are unique per table | Constraint names must be unique across the schema |
