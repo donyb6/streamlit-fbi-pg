@@ -88,3 +88,7 @@ Start the dashboard:
 ```bash
 streamlit run app/web_app.py
 ```
+
+## Deployment
+
+The gold tables and views are copied to a Neon project with `pg_dump` and `psql`. The app connects through a read-only database role. Its connection string is stored as a `DATABASE_URL` secret on Streamlit Community Cloud and is never committed to the repo.
