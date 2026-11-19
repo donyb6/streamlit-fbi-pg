@@ -108,3 +108,8 @@ scripts/      Pipeline scripts and views.sql
 tests/        Data quality tests
 data/         schema.sql, views.sql, reset_schema.sql
 ```
+
+## Author
+
+Desmond Boako Obeng, BSc Data Science student at Ghana Communication Technology University, working towards data engineering.
+[GitHub](https://github.com/donyb6) · obengdboako@gmail.com
